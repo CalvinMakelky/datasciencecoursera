@@ -1,0 +1,102 @@
+---
+title: "HW1 Advanced R"
+author: "Calvin Makelky, A01872013"
+date: "October 4, 2016"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#1
+##a
+```{r}
+load(url("http://www.math.usu.edu/adele/IntroR/SFHousing.rda"))
+sf = housing
+names(sf)
+sapply(sf, function(x) sum(is.na(x)))
+```
+The number of missing values for each variable is listed above.
+
+#b
+```{r}
+tapply(sf$price, sf$county, median,  na.rm=TRUE)
+```
+The median housing price of each county is listed above.
+
+#c
+```{r}
+citymean = tapply(sf$price, sf$city, mean,  na.rm=TRUE)
+citysort = sort(citymean, decreasing=TRUE)
+head(citysort, 10)
+```
+The top ten most expensive cities based on mean housing price is listed above.
+
+#d
+```{r}
+zips = as.numeric(as.character(sf$zip))
+sanfran = function(x){
+    if ( abs(94118-x)>=17 | is.na(x)==TRUE )
+        return(FALSE)
+
+    else
+        return(TRUE)
+}
+SFZip = sapply(zips, sanfran)
+length(SFZip[SFZip==TRUE])
+```
+There are 8134 observations that fall into the SF area. 
+
+#e
+```{r}
+tapply(sf$br, SFZip, mean)
+```
+On average there is about .7 less bedrooms in houses in San Fransisco than in other cities outside of San Fransisco.
+
+#2
+#a
+```{r}
+gdpdata= read.table("gdp.txt")
+athdata= read.table("athletes2016.txt")
+popdata= read.table("population.txt")
+```
+Gdp is a discrete quantitative variable.
+Population is a discrete quantitative variable.
+Total is a discrete quantitative variable.
+
+#b
+```{r}
+colnames(gdpdata) = c("country", "gdp")
+athdata = athdata[,-(2:5)]
+colnames(athdata) = c("country", "total")
+colnames(popdata) = c("country", "population")
+plot(popdata$population, gdpdata$gdp)
+```
+This plot violates all three properties of a good graph.
+1) The data does not stand out, as it is in black and white.
+2) The plot does not facilitate comparison because of the lack of color and more importantly how 3 super large or rich countries obscure the bulk of the data
+3) The plot is not information rich at all. It lacks a title and a clear x and y axis title. There's also no caption to decribe what is going on. This is the gdp and population of what countries?
+
+#c
+```{r}
+gdpPP = gdpdata$gdp / popdata$population
+library(RColorBrewer) 
+mycolors = brewer.pal(9, "Set3")
+symbols(log(popdata$population), log(gdpPP), circles=athdata$total, 
+        col=mycolors, bg=mycolors, inches=.6 )
+```
+
+#d
+```{r}
+symbols(log(popdata$population), log(gdpPP), inches =.6, 
+circles=athdata$total, bg=mycolors, main="GDP Per Person vs Population", 
+xlab="Log of Population of Country", ylab="Log of GDP Per Person in Country")
+
+countries5 = c(198, 41, 87, 111, 124)
+
+text(log(popdata[countries5,2]), log(gdpPP[countries5]), 
+     popdata[countries5,1], cex=1, pos=3, col="red")
+
+```
+Seems to be a relationship between number of medals and population, while none between GDP per person and number of medals won.
