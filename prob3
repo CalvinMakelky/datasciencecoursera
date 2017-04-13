@@ -1,0 +1,31 @@
+#!/usr/bin/perl
+
+use 5.010;
+use strict;
+use warnings;
+
+our @likes = ("chicken", "pasta", "steak", "apples");
+our @hates = ("brocolli", "onions", "peppers", "oranges");
+
+print "Enter food you like: ";
+my $l = <STDIN>;
+push @likes, $l;
+print "Enter food you hate: ";
+my $h = <STDIN>;
+push @hates, $h;
+
+print "last two items in least liked foods array: ".@hates[3]." ".@hates[4];
+
+our $new = pop @likes;
+unshift @likes, $new;
+
+print @likes[0]." ".@likes[4]."\n";
+print @hates[0]." ".@hates[4];
+
+our $old = pop @hates;
+print "Last in least liked foods array: $old\n";
+our $likeLength = $#likes + 1;
+our $hateLength = $#hates + 1;
+print "Number of elements in liked foods array: $likeLength\n";
+print "Number of elements in least liked foods array: $hateLength\n";
+

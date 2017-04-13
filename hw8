@@ -1,0 +1,46 @@
+#!/usr/bin/perl
+
+use 5.010;
+use strict;
+use warnings;
+
+
+my @m2by2_1 = (
+[1, 2],
+[4, 5]
+); 
+my @m2by2_2 = (
+[10, 11],
+[13, 14]
+);
+sub fun{
+	my ($first, $second) = @_;
+	print $first + $second;
+}
+#fun( );
+
+
+sub matrix_add{
+	my ($ref1[$r][$c], $ref2[$r][$c]) = @_;
+	foreach $r (0..$r-1) {
+		foreach $c (0..$c-1){
+			$result[$r][$c] = $ref1[$r][$c] + $ref2[$r][$c];
+		
+}
+	
+
+sub matrix_subtract{
+	
+	}
+
+## print cells of a 2D matrix 
+sub print_matrix {     
+	foreach (@_) {        
+		foreach (@{$_}) {          
+			print "$_ ";        
+		}        
+			print "\n";    
+	} 
+}
+#my @add_m2by2 = matrix_add(\@m2by2_1, \@m2by2_2);
+print_matrix(@m2by2_1); print "\n";
